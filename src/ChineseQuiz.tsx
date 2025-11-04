@@ -40,7 +40,44 @@ interface VocabItem {
   meaning: string;
 }
 
+// Helper function to properly shuffle an array using Fisher-Yates algorithm
+const shuffleArray = <T,>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+// Helper function to get options with matching character length
+const getOptionsWithMatchingLength = (correctWord: VocabItem, allWords: VocabItem[]): VocabItem[] => {
+  const charLength = correctWord.hanzi.length;
+
+  // Filter words with the same character length (excluding the correct word)
+  const sameLengthWords = allWords.filter(word =>
+    word.hanzi.length === charLength && word.hanzi !== correctWord.hanzi
+  );
+
+  // If not enough same-length words, fill with any other words
+  let pool = sameLengthWords;
+  if (sameLengthWords.length < 3) {
+    const otherWords = allWords.filter(word =>
+      word.hanzi !== correctWord.hanzi && !sameLengthWords.includes(word)
+    );
+    pool = [...sameLengthWords, ...otherWords];
+  }
+
+  // Shuffle the pool and select 3 options
+  const shuffledPool = shuffleArray(pool);
+  const selectedOptions = shuffledPool.slice(0, 3);
+
+  // Combine with correct word and shuffle
+  return shuffleArray([correctWord, ...selectedOptions]);
+};
+
 export default function ChineseQuiz() {
+  const [shuffledVocab, setShuffledVocab] = useState<VocabItem[]>([]);
   const [current, setCurrent] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState<VocabItem | null>(null);
@@ -48,13 +85,20 @@ export default function ChineseQuiz() {
   const [isQuizComplete, setIsQuizComplete] = useState(false);
   const [options, setOptions] = useState<VocabItem[]>([]);
 
-  const currentWord = vocabList[current];
+  // Initialize and shuffle vocab when component mounts
+  React.useEffect(() => {
+    const shuffled = shuffleArray(vocabList);
+    setShuffledVocab(shuffled);
+  }, []);
+
+  const currentWord = shuffledVocab[current];
 
   React.useEffect(() => {
-    const newOptions = [currentWord, ...vocabList.filter((_, i) => i !== current).sort(() => 0.5 - Math.random()).slice(0, 3)]
-      .sort(() => 0.5 - Math.random());
-    setOptions(newOptions);
-  }, [current]);
+    if (currentWord) {
+      const newOptions = getOptionsWithMatchingLength(currentWord, shuffledVocab);
+      setOptions(newOptions);
+    }
+  }, [current, currentWord, shuffledVocab]);
 
   const handleSelect = (option: VocabItem) => {
     setSelected(option);
@@ -63,22 +107,35 @@ export default function ChineseQuiz() {
   };
 
   const nextQuestion = () => {
-    if (current === vocabList.length - 1) {
+    if (current === shuffledVocab.length - 1) {
       setIsQuizComplete(true);
     } else {
       setSelected(null);
       setShowAnswer(false);
-      setCurrent((prev) => (prev + 1) % vocabList.length);
+      setCurrent((prev) => (prev + 1) % shuffledVocab.length);
     }
   };
 
   const restartQuiz = () => {
+    // Reshuffle the vocabulary
+    const shuffled = shuffleArray(vocabList);
+    setShuffledVocab(shuffled);
+
     setCurrent(0);
     setScore(0);
     setSelected(null);
     setShowAnswer(false);
     setIsQuizComplete(false);
   };
+
+  // Loading state
+  if (!currentWord || shuffledVocab.length === 0) {
+    return (
+      <div style={{ padding: '3rem', maxWidth: '1024px', margin: '0 auto', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#2563eb' }}>Memuat kuis...</h1>
+      </div>
+    );
+  }
 
   if (isQuizComplete) {
     return (
@@ -87,21 +144,21 @@ export default function ChineseQuiz() {
         <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '2rem', marginBottom: '2rem' }}>
           <h2 style={{ fontSize: '1.875rem', fontWeight: '600', marginBottom: '1.5rem' }}>Hasil Akhir</h2>
           <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem', color: '#059669' }}>
-            {score} / {vocabList.length}
+            {score} / {shuffledVocab.length}
           </p>
           <p style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>
-            Persentase: {Math.round((score / vocabList.length) * 100)}%
+            Persentase: {Math.round((score / shuffledVocab.length) * 100)}%
           </p>
-          {score === vocabList.length && (
+          {score === shuffledVocab.length && (
             <p style={{ fontSize: '1.125rem', color: '#059669', fontWeight: '600', marginBottom: '1rem' }}>🎉 Sempurna! Semua jawaban benar!</p>
           )}
-          {score >= vocabList.length * 0.8 && score < vocabList.length && (
+          {score >= shuffledVocab.length * 0.8 && score < shuffledVocab.length && (
             <p style={{ fontSize: '1.125rem', color: '#2563eb', fontWeight: '600', marginBottom: '1rem' }}>👏 Bagus! Kamu sudah sangat baik!</p>
           )}
-          {score >= vocabList.length * 0.6 && score < vocabList.length * 0.8 && (
+          {score >= shuffledVocab.length * 0.6 && score < shuffledVocab.length * 0.8 && (
             <p style={{ fontSize: '1.125rem', color: '#ca8a04', fontWeight: '600', marginBottom: '1rem' }}>👍 Cukup baik! Terus berlatih ya!</p>
           )}
-          {score < vocabList.length * 0.6 && (
+          {score < shuffledVocab.length * 0.6 && (
             <p style={{ fontSize: '1.125rem', color: '#dc2626', fontWeight: '600', marginBottom: '1rem' }}>💪 Jangan menyerah! Coba lagi ya!</p>
           )}
         </div>
@@ -131,7 +188,7 @@ export default function ChineseQuiz() {
       <div style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#2563eb' }}>Kuis Bahasa Mandarin</h1>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <p style={{ fontSize: '1.5rem' }}>Soal {current + 1} dari {vocabList.length}</p>
+          <p style={{ fontSize: '1.5rem' }}>Soal {current + 1} dari {shuffledVocab.length}</p>
           <p style={{ fontSize: '1.5rem', fontWeight: '600' }}>Skor: {score}</p>
         </div>
       </div>
@@ -221,7 +278,7 @@ export default function ChineseQuiz() {
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
           >
-            {current === vocabList.length - 1 ? 'Lihat Hasil' : 'Soal Berikutnya'}
+            {current === shuffledVocab.length - 1 ? 'Lihat Hasil' : 'Soal Berikutnya'}
           </button>
         )}
       </div>
