@@ -131,48 +131,70 @@ export default function ChineseQuiz() {
   // Loading state
   if (!currentWord || shuffledVocab.length === 0) {
     return (
-      <div style={{ padding: '3rem', maxWidth: '1024px', margin: '0 auto', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#2563eb' }}>Memuat kuis...</h1>
+      <div style={{
+        padding: 'clamp(1rem, 5vw, 3rem)',
+        maxWidth: '1024px',
+        margin: '0 auto',
+        textAlign: 'center',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 5vw, 2.5rem)', fontWeight: 'bold', color: '#2563eb' }}>Memuat kuis...</h1>
       </div>
     );
   }
 
   if (isQuizComplete) {
     return (
-      <div style={{ padding: '3rem', maxWidth: '832px', margin: '0 auto', textAlign: 'center' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '2rem', color: '#2563eb' }}>Kuis Selesai!</h1>
-        <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '2rem', marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.875rem', fontWeight: '600', marginBottom: '1.5rem' }}>Hasil Akhir</h2>
-          <p style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '1rem', color: '#059669' }}>
+      <div style={{
+        padding: 'clamp(1rem, 5vw, 3rem)',
+        maxWidth: 'clamp(320px, 90vw, 832px)',
+        margin: '0 auto',
+        textAlign: 'center'
+      }}>
+        <h1 style={{ fontSize: 'clamp(1.5rem, 6vw, 2.5rem)', fontWeight: 'bold', marginBottom: 'clamp(1rem, 4vw, 2rem)', color: '#2563eb' }}>Kuis Selesai!</h1>
+        <div style={{
+          backgroundColor: 'white',
+          borderRadius: '0.5rem',
+          boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+          padding: 'clamp(1rem, 4vw, 2rem)',
+          marginBottom: 'clamp(1rem, 4vw, 2rem)'
+        }}>
+          <h2 style={{ fontSize: 'clamp(1.25rem, 4vw, 1.875rem)', fontWeight: '600', marginBottom: 'clamp(0.75rem, 3vw, 1.5rem)' }}>Hasil Akhir</h2>
+          <p style={{ fontSize: 'clamp(2rem, 8vw, 3rem)', fontWeight: 'bold', marginBottom: 'clamp(0.5rem, 2vw, 1rem)', color: '#059669' }}>
             {score} / {shuffledVocab.length}
           </p>
-          <p style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>
+          <p style={{ fontSize: 'clamp(1rem, 3vw, 1.25rem)', marginBottom: 'clamp(1rem, 3vw, 1.5rem)' }}>
             Persentase: {Math.round((score / shuffledVocab.length) * 100)}%
           </p>
           {score === shuffledVocab.length && (
-            <p style={{ fontSize: '1.125rem', color: '#059669', fontWeight: '600', marginBottom: '1rem' }}>🎉 Sempurna! Semua jawaban benar!</p>
+            <p style={{ fontSize: 'clamp(0.875rem, 3vw, 1.125rem)', color: '#059669', fontWeight: '600', marginBottom: 'clamp(0.5rem, 2vw, 1rem)' }}>🎉 Sempurna! Semua jawaban benar!</p>
           )}
           {score >= shuffledVocab.length * 0.8 && score < shuffledVocab.length && (
-            <p style={{ fontSize: '1.125rem', color: '#2563eb', fontWeight: '600', marginBottom: '1rem' }}>👏 Bagus! Kamu sudah sangat baik!</p>
+            <p style={{ fontSize: 'clamp(0.875rem, 3vw, 1.125rem)', color: '#2563eb', fontWeight: '600', marginBottom: 'clamp(0.5rem, 2vw, 1rem)' }}>👏 Bagus! Kamu sudah sangat baik!</p>
           )}
           {score >= shuffledVocab.length * 0.6 && score < shuffledVocab.length * 0.8 && (
-            <p style={{ fontSize: '1.125rem', color: '#ca8a04', fontWeight: '600', marginBottom: '1rem' }}>👍 Cukup baik! Terus berlatih ya!</p>
+            <p style={{ fontSize: 'clamp(0.875rem, 3vw, 1.125rem)', color: '#ca8a04', fontWeight: '600', marginBottom: 'clamp(0.5rem, 2vw, 1rem)' }}>👍 Cukup baik! Terus berlatih ya!</p>
           )}
           {score < shuffledVocab.length * 0.6 && (
-            <p style={{ fontSize: '1.125rem', color: '#dc2626', fontWeight: '600', marginBottom: '1rem' }}>💪 Jangan menyerah! Coba lagi ya!</p>
+            <p style={{ fontSize: 'clamp(0.875rem, 3vw, 1.125rem)', color: '#dc2626', fontWeight: '600', marginBottom: 'clamp(0.5rem, 2vw, 1rem)' }}>💪 Jangan menyerah! Coba lagi ya!</p>
           )}
         </div>
         <button
           onClick={restartQuiz}
           style={{
-            padding: '1rem 2rem',
+            padding: 'clamp(0.75rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem)',
             backgroundColor: '#3b82f6',
             color: 'white',
-            fontSize: '1.25rem',
+            fontSize: 'clamp(1rem, 3vw, 1.25rem)',
             borderRadius: '0.5rem',
             border: 'none',
             cursor: 'pointer',
-            transition: 'background-color 0.2s'
+            transition: 'background-color 0.2s',
+            width: '100%',
+            maxWidth: '300px'
           }}
           onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
           onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
@@ -184,27 +206,60 @@ export default function ChineseQuiz() {
   }
 
   return (
-    <div style={{ padding: '3rem', maxWidth: '1024px', margin: '0 auto', textAlign: 'center' }}>
-      <div style={{ marginBottom: '2rem' }}>
-        <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1rem', color: '#2563eb' }}>Kuis Bahasa Mandarin</h1>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-          <p style={{ fontSize: '1.5rem' }}>Soal {current + 1} dari {shuffledVocab.length}</p>
-          <p style={{ fontSize: '1.5rem', fontWeight: '600' }}>Skor: {score}</p>
+    <div style={{
+      padding: 'clamp(1rem, 5vw, 3rem)',
+      maxWidth: '1024px',
+      margin: '0 auto',
+      textAlign: 'center',
+      minHeight: '100vh'
+    }}>
+      <div style={{ marginBottom: 'clamp(1rem, 4vw, 2rem)' }}>
+        <h1 style={{
+          fontSize: 'clamp(1.5rem, 6vw, 2.5rem)',
+          fontWeight: 'bold',
+          marginBottom: 'clamp(0.75rem, 3vw, 1rem)',
+          color: '#2563eb'
+        }}>Kuis Bahasa Mandarin</h1>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 'clamp(1rem, 4vw, 1.5rem)',
+          flexWrap: 'wrap',
+          gap: '0.5rem'
+        }}>
+          <p style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)' }}>Soal {current + 1} dari {shuffledVocab.length}</p>
+          <p style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', fontWeight: '600' }}>Skor: {score}</p>
         </div>
       </div>
 
-      <div style={{ backgroundColor: 'white', borderRadius: '0.5rem', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)', padding: '2rem', marginBottom: '2rem' }}>
-        <p style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Pilih karakter yang benar berdasarkan pinyin:</p>
-        <h2 style={{ fontSize: '3rem', fontWeight: 'bold', marginBottom: '2rem', color: '#3b82f6' }}>{currentWord.pinyin}</h2>
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '0.5rem',
+        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        padding: 'clamp(1rem, 4vw, 2rem)',
+        marginBottom: 'clamp(1rem, 4vw, 2rem)'
+      }}>
+        <h2 style={{
+          fontSize: 'clamp(2rem, 7vw, 3rem)',
+          fontWeight: 'bold',
+          marginBottom: 'clamp(1rem, 4vw, 2rem)',
+          color: '#3b82f6'
+        }}>{currentWord.pinyin}</h2>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '2rem' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+          gap: 'clamp(0.75rem, 3vw, 1.5rem)',
+          marginBottom: 'clamp(1rem, 4vw, 2rem)'
+        }}>
           {options.map((opt, i) => (
             <button
               key={i}
               onClick={() => handleSelect(opt)}
               disabled={showAnswer}
               style={{
-                padding: '1.5rem',
+                padding: 'clamp(1rem, 3vw, 1.5rem)',
                 borderRadius: '0.5rem',
                 border: showAnswer
                   ? opt.hanzi === currentWord.hanzi
@@ -213,9 +268,9 @@ export default function ChineseQuiz() {
                     ? '4px solid #dc2626'
                     : '1px solid #d1d5db'
                   : '1px solid #d1d5db',
-                fontSize: '2.5rem',
+                fontSize: 'clamp(1.5rem, 5vw, 2.5rem)',
                 transition: 'all 0.2s',
-                minHeight: '120px',
+                minHeight: 'clamp(80px, 20vw, 120px)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -227,7 +282,8 @@ export default function ChineseQuiz() {
                     : 'white'
                   : 'white',
                 opacity: showAnswer && opt.hanzi !== currentWord.hanzi && opt !== selected ? 0.5 : 1,
-                cursor: showAnswer ? 'not-allowed' : 'pointer'
+                cursor: showAnswer ? 'not-allowed' : 'pointer',
+                width: '100%'
               }}
               onMouseOver={(e) => {
                 if (!showAnswer) {
@@ -250,13 +306,18 @@ export default function ChineseQuiz() {
         </div>
 
         {showAnswer && (
-          <div style={{ marginBottom: '1.5rem', padding: '1.5rem', backgroundColor: '#eff6ff', borderRadius: '0.5rem' }}>
-            <p style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+          <div style={{
+            marginBottom: 'clamp(1rem, 3vw, 1.5rem)',
+            padding: 'clamp(1rem, 3vw, 1.5rem)',
+            backgroundColor: '#eff6ff',
+            borderRadius: '0.5rem'
+          }}>
+            <p style={{ fontSize: 'clamp(1rem, 3vw, 1.5rem)', marginBottom: '0.5rem' }}>
               <span style={{ color: selected?.hanzi === currentWord.hanzi ? '#059669' : '#dc2626' }}>
                 {selected?.hanzi === currentWord.hanzi ? "✓ Benar!" : "✗ Salah"}
               </span>
             </p>
-            <p style={{ fontSize: '1.25rem' }}>
+            <p style={{ fontSize: 'clamp(0.875rem, 2.5vw, 1.25rem)' }}>
               Jawaban benar: <span style={{ fontWeight: 'bold' }}>{currentWord.hanzi}</span> - {currentWord.meaning}
             </p>
           </div>
@@ -266,14 +327,16 @@ export default function ChineseQuiz() {
           <button
             onClick={nextQuestion}
             style={{
-              padding: '1rem 2rem',
+              padding: 'clamp(0.75rem, 3vw, 1rem) clamp(1.5rem, 5vw, 2rem)',
               backgroundColor: '#3b82f6',
               color: 'white',
-              fontSize: '1.25rem',
+              fontSize: 'clamp(1rem, 3vw, 1.25rem)',
               borderRadius: '0.5rem',
               border: 'none',
               cursor: 'pointer',
-              transition: 'background-color 0.2s'
+              transition: 'background-color 0.2s',
+              width: '100%',
+              maxWidth: '300px'
             }}
             onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
             onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
