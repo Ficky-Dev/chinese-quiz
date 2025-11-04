@@ -31,7 +31,6 @@ const vocabList = [
   { hanzi: '有', pinyin: 'yǒu', meaning: 'punya' },
   { hanzi: '去', pinyin: 'qù', meaning: 'pergi' },
   { hanzi: '姓', pinyin: 'xìng', meaning: 'nama keluarga' },
-  { hanzi: '哪儿', pinyin: 'nǎ er', meaning: 'di mana' }
 ];
 
 interface VocabItem {
