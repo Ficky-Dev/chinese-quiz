@@ -468,7 +468,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 
 // Helper function to create options with correct answer tracking while maintaining a, b, c, d, e order
 const createOptions = (question: QuizQuestion): Option[] => {
-  return question.options.map((opt, index) => ({
+  return question.options.map((opt) => ({
     label: opt.charAt(0),
     text: opt.substring(2),
     isCorrect: opt === question.answer
