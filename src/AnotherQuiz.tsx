@@ -87,7 +87,7 @@ const quizData = [
       "c. 开学了，真高兴。",
       "d. 开学了，没高兴。"
     ],
-    "answer": "c. 开学了，真高兴."
+    "answer": "c. 开学了，真高兴。"
   },
   {
     "id": 9,
@@ -232,17 +232,17 @@ const quizData = [
     ],
     "answer": "b. Mama saya bukan Guru, dia adalah Dokter."
   },
-  {
-    "id": 22,
-    "question": "Kalimat bahasa Indonesia yang benar dari: 我爸爸不是老师，他是商人。",
-    "options": [
-      "a. Ayah saya bukan Dokter, dia adalah Polisi.",
-      "b. Ayah saya bukan Guru, dia adalah Pedagang.",
-      "c. Ayah saya bukan Polisi, dia adalah Pedagang.",
-      "d. Ayah saya bukan Dokter, dia adalah Guru."
-    ],
-    "answer": "b. Ayah saya bukan Guru, dia adalah Pedagang."
-  },
+  // {
+  //   "id": 22,
+  //   "question": "Kalimat bahasa Indonesia yang benar dari: 我爸爸不是老师，他是商人。",
+  //   "options": [
+  //     "a. Ayah saya bukan Dokter, dia adalah Polisi.",
+  //     "b. Ayah saya bukan Guru, dia adalah Pedagang.",
+  //     "c. Ayah saya bukan Polisi, dia adalah Pedagang.",
+  //     "d. Ayah saya bukan Dokter, dia adalah Guru."
+  //   ],
+  //   "answer": "b. Ayah saya bukan Guru, dia adalah Pedagang."
+  // },
   {
     "id": 23,
     "question": "Kalimat bahasa Indonesia yang benar dari: 做个有礼貌的好孩子。",
@@ -330,6 +330,116 @@ const quizData = [
       "d. 老师"
     ],
     "answer": "b. 家"
+  },
+  {
+    "id": 31,
+    "question": "Susunlah kalimat yang benar dari: 喜欢 – 我 – 吃 – 苹果",
+    "options": [
+      "a. 苹果喜欢我吃",
+      "b. 我喜欢吃苹果",
+      "c. 吃苹果我喜欢",
+      "d. 喜欢吃我苹果"
+    ],
+    "answer": "b. 我喜欢吃苹果"
+  },
+  {
+    "id": 32,
+    "question": "Terjemahkan ke dalam Mandarin: 'Kakak perempuan saya adalah murid.'",
+    "options": [
+      "a. 我哥哥是学生。",
+      "b. 我妹妹是学生。",
+      "c. 我姐姐是学生。",
+      "d. 我弟弟是学生。"
+    ],
+    "answer": "c. 我姐姐是学生。"
+  },
+  {
+    "id": 33,
+    "question": "Apa jawaban yang sopan jika seseorang berkata '对不起'",
+    "options": [
+      "a. 没关系",
+      "b. 不客气",
+      "c. 谢谢",
+      "d. 再见"
+    ],
+    "answer": "a. 没关系"
+  },
+  {
+    "id": 34,
+    "question": "Tulisan Hanzi yang benar dari 'PERPUSTAKAAN' adalah...",
+    "options": [
+      "a. 饭馆",
+      "b. 体育馆",
+      "c. 商店",
+      "d. 图书馆"
+    ],
+    "answer": "d. 图书馆"
+  },
+  {
+    "id": 35,
+    "question": "Terjemahkan kalimat ini: '我不是医生'",
+    "options": [
+      "a. Saya adalah dokter.",
+      "b. Saya bukan dokter.",
+      "c. Dia bukan dokter.",
+      "d. Ayah saya dokter."
+    ],
+    "answer": "b. Saya bukan dokter."
+  },
+  {
+    "id": 36,
+    "question": "Kalimat yang benar untuk: 'Kami pergi ke taman.'",
+    "options": [
+      "a. 我们去公园。",
+      "b. 你们去学校。",
+      "c. 他们去医院。",
+      "d. 我去公园。"
+    ],
+    "answer": "a. 我们去公园。"
+  },
+  {
+    "id": 37,
+    "question": "Arti dari kata '明天见' adalah...",
+    "options": [
+      "a. Selamat malam",
+      "b. Sampai jumpa besok",
+      "c. Selamat pagi",
+      "d. Terima kasih banyak"
+    ],
+    "answer": "b. Sampai jumpa besok"
+  },
+  {
+    "id": 38,
+    "question": "Lengkapi kalimat: 這是我的书...",
+    "options": [
+      "a. saya",
+      "b. kamu",
+      "c. dia",
+      "d. siapa"
+    ],
+    "answer": "a. saya"
+  },
+  {
+    "id": 39,
+    "question": "Susun kata menjadi kalimat: 很多 – 学校 – 老师 – 有",
+    "options": [
+      "a. 很多学校有老师",
+      "b. 老师学校有很多",
+      "c. 学校有很多老师",
+      "d. 有很多学校老师"
+    ],
+    "answer": "c. 学校有很多老师"
+  },
+  {
+    "id": 40,
+    "question": "Manakah di bawah ini yang artinya 'Polisi'?",
+    "options": [
+      "a. 医生",
+      "b. 老师",
+      "c. 商人",
+      "d. 警察"
+    ],
+    "answer": "d. 警察"
   }
 ];
 
@@ -356,15 +466,13 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return shuffled;
 };
 
-// Helper function to shuffle options but track correct answer
-const shuffleOptions = (question: QuizQuestion): Option[] => {
-  const options = question.options.map((opt, index) => ({
+// Helper function to create options with correct answer tracking while maintaining a, b, c, d, e order
+const createOptions = (question: QuizQuestion): Option[] => {
+  return question.options.map((opt, index) => ({
     label: opt.charAt(0),
     text: opt.substring(2),
     isCorrect: opt === question.answer
   }));
-
-  return shuffleArray(options);
 };
 
 export default function AnotherQuiz() {
@@ -386,7 +494,7 @@ export default function AnotherQuiz() {
 
   React.useEffect(() => {
     if (currentQuestion) {
-      const newOptions = shuffleOptions(currentQuestion);
+      const newOptions = createOptions(currentQuestion);
       setOptions(newOptions);
     }
   }, [current, currentQuestion]);
